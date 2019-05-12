@@ -3,29 +3,29 @@
 ###################################################################################################
 # Network interfaces
 ## Management Network
-export MGNT_INTERFACE=eth0
+export MGNT_INTERFACE=ens4
 ## Tenant / xvlan Network
-export DATA_INTERFACE=eth1
+export DATA_INTERFACE=ens5
 ## Provider Network
-export EXT_INTERFACE=eth2
+export EXT_INTERFACE=ens6
 
 ## linuxbridge || openvswitch
 export NEUTRON_AGENT=linuxbridge
 
 ## Assigning IP for CONTROLLER node
-export CTL_MGNT_IP=172.25.234.90
-export CTL_EXT_IP=192.168.81.165
-export CTL_DATA_IP=10.10.20.10
+export CTL_MGNT_IP=10.138.0.90
+export CTL_EXT_IP=192.168.8.90
+export CTL_DATA_IP=10.10.20.90
 
 ## Assigning IP for COMPUTE1 node
-export COM1_MGNT_IP=172.25.234.95
-export COM1_EXT_IP=192.168.81.166
-export COM1_DATA_IP=10.10.20.15
+export COM1_MGNT_IP=10.138.0.91
+export COM1_EXT_IP=192.168.81.91
+export COM1_DATA_IP=10.10.20.91
 
 ## Assigning IP for COMPUTE2 node
-export COM2_MGNT_IP=172.25.234.96
-export COM2_EXT_IP=192.168.81.167
-export COM2_DATA_IP=10.10.20.16
+export COM2_MGNT_IP=10.138.0.92
+export COM2_EXT_IP=192.168.81.92
+export COM2_DATA_IP=10.10.20.92
 
 ## Assigning IP for CINDER node
 export CIN_MGNT_IP=172.25.234.91
@@ -46,20 +46,20 @@ export NETMASK_ADD_DATA=255.255.255.0
 ## DNS server
 export DNS_IP="172.25.234.254"
 ## NTP server
-export NTP_SERVER="openstack-router.inet.d13ht01.tk"
+export NTP_SERVER="europe.pool.ntp.org"
 
 ###################################################################################################
 # OpenStack settings
 ## OpenStack API endpoint
-export PUBLIC_FQDN_CTL=openstack.inet.d13ht01.tk
-export MGNT_FQDN_CTL=openstack.inet.d13ht01.tk
-MGNT_FQDN_COM1=compute1.openstack.dc4.tma.com.vn
-MGNT_FQDN_COM2=compute2.openstack.dc4.tma.com.vn
-MGNT_FQDN_CIN1=block1.openstack.dc4.tma.com.vn
+export PUBLIC_FQDN_CTL=10.138.0.90
+export MGNT_FQDN_CTL=10.138.0.90
+MGNT_FQDN_COM1=10.138.0.91
+MGNT_FQDN_COM2=10.138.0.92
+MGNT_FQDN_CIN1=10.138.0.90
 
 
 ## Current OpenStack Region
-export REGION_NAME="VN_HCM_DC4"
+export REGION_NAME="CTU_01"
 
 ###################################################################################################
 # Credentials variable
