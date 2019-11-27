@@ -66,37 +66,37 @@ export REGION_NAME="CTU_01"
 
 ###################################################################################################
 # Credentials variable
-export DEFAULT_PASS="xenodochial_panini_0eedd964783b"
+export DEFAULT_PASS="admin"
 
 ## Admin credentials
 export CREDENTIALS_ADMIN_USERNAME="admin"
 export CREDENTIALS_ADMIN_PASSWORD="admin"
 ## Demo project credentials
-export CREDENTIALS_DEMO_USERNAME="demo"
-export CREDENTIALS_DEMO_PASSWORD="demo"
+export CREDENTIALS_DEMO_USERNAME="admin"
+export CREDENTIALS_DEMO_PASSWORD="admin"
 
 ## Internal services
 export RABBIT_PASS="$DEFAULT_PASS"
 export MYSQL_PASS="$DEFAULT_PASS"
 
 ## OpenStack service credentials
-export KEYSTONE_PASS="laughing_haibt_964a1037f564"
-export GLANCE_PASS="laughing_haibt_964a1037f564"
-export NOVA_PASS="laughing_haibt_964a1037f564"
-export NEUTRON_PASS="laughing_haibt_964a1037f564"
-export PLACEMENT_PASS="laughing_haibt_964a1037f564"
-export METADATA_SECRET="laughing_haibt_964a1037f564"
-export CINDER_PASS="laughing_haibt_964a1037f564"
+export KEYSTONE_PASS="admin"
+export GLANCE_PASS="admin"
+export NOVA_PASS="admin"
+export NEUTRON_PASS="admin"
+export PLACEMENT_PASS="admin"
+export METADATA_SECRET="admin"
+export CINDER_PASS="admin"
 
 ## OpenStack database credentials
 #Database password of Identity service
-export KEYSTONE_DBPASS="compassionate_wilson_21a54758"
+export KEYSTONE_DBPASS="admin"
 #Database password for Image service
-export GLANCE_DBPASS="compassionate_wilson_21a54758"
+export GLANCE_DBPASS="admin"
 #Database password for Compute service
-export NOVA_DBPASS="compassionate_wilson_21a54758"
-export NOVA_API_DBPASS="compassionate_wilson_21a54758"
+export NOVA_DBPASS="admin"
+export NOVA_API_DBPASS="admin"
 #Database password for the Networking service
-export NEUTRON_DBPASS="compassionate_wilson_21a54758"
+export NEUTRON_DBPASS="admin"
 #Database password for the Block Storage service
-export CINDER_DBPASS="compassionate_wilson_21a54758"
+export CINDER_DBPASS="admin"
