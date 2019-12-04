@@ -34,6 +34,7 @@ EOF
         image admin http://$MGNT_FQDN_CTL:9292
 
     print_install "Install GLANCE"
+    apt-get -y install python3-cinderclient
     apt-get -y install glance
     backup_config $glanceapi_ctl
     backup_config $glancereg_ctl
@@ -93,8 +94,9 @@ EOF
     su -s /bin/sh -c "glance-manage db_sync" glance
 
     echocolor "Restart the Image services"
-    service glance-registry restart
-    service glance-api restart
+    # service glance-registry restart
+    # service glance-api restart
+    service glance-* restart
 
     print_header "Verify operation"
     openstack image list
