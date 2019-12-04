@@ -15,7 +15,7 @@ FLUSH PRIVILEGES;
 EOF
 
   print_install "Install keystone"
-  apt-get install -y keystone apache2 libapache2-mod-wsgi
+  apt-get install -y keystone apache2 libapache2-mod-wsgi-py3
 
   print_header "Configure keystone"
 
