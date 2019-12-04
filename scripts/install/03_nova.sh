@@ -153,11 +153,11 @@ EOF
         # openstack compute service list
         nova-manage cell_v2 list_cells
 
-        service nova-api restart
-        service nova-consoleauth restart
-        service nova-scheduler restart
-        service nova-conductor restart
-        service nova-novncproxy restart
+        # service nova-api restart
+        # service nova-scheduler restart
+        # service nova-conductor restart
+        # service nova-novncproxy restart
+        service nova-* restart
 
         # openstack extension list --network
         # openstack compute service list
