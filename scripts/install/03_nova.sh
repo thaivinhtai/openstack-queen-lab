@@ -43,13 +43,13 @@ EOF
         openstack endpoint create --region ${REGION_NAME} \
             compute admin http://$MGNT_FQDN_CTL:8774/v2.1
 
-        openstack user create --domain default --password $PLACEMENT_PASS placement
-        openstack role add --project service --user placement admin
-        openstack service create --name placement --description "Placement API" placement
-
-        openstack endpoint create --region ${REGION_NAME} placement public http://$PUBLIC_FQDN_CTL:8778
-        openstack endpoint create --region ${REGION_NAME} placement internal http://$MGNT_FQDN_CTL:8778
-        openstack endpoint create --region ${REGION_NAME} placement admin http://$MGNT_FQDN_CTL:8778
+        # openstack user create --domain default --password $PLACEMENT_PASS placement
+        # openstack role add --project service --user placement admin
+        # openstack service create --name placement --description "Placement API" placement
+        #
+        # openstack endpoint create --region ${REGION_NAME} placement public http://$PUBLIC_FQDN_CTL:8778
+        # openstack endpoint create --region ${REGION_NAME} placement internal http://$MGNT_FQDN_CTL:8778
+        # openstack endpoint create --region ${REGION_NAME} placement admin http://$MGNT_FQDN_CTL:8778
 
     fi
 
@@ -89,6 +89,7 @@ EOF
     echocolor "Configure identity service access"
     ops_edit $nova_conf api auth_strategy keystone
 
+    ops_edit $nova_conf keystone_authtoken www_authenticate_uri http://$MGNT_FQDN_CTL:5000
     ops_edit $nova_conf keystone_authtoken auth_url http://$MGNT_FQDN_CTL:5000
     ops_edit $nova_conf keystone_authtoken memcached_servers $MGNT_FQDN_CTL:11211
     ops_edit $nova_conf keystone_authtoken auth_type password
@@ -110,7 +111,7 @@ EOF
         ops_edit $nova_conf DEFAULT my_ip $COM2_MGNT_IP
     fi
 
-    ops_edit $nova_conf DEFAULT use_neutron True
+    ops_edit $nova_conf DEFAULT use_neutron true
     ops_edit $nova_conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
 
     echocolor "Configure the VNC proxy"
@@ -166,6 +167,7 @@ EOF
         # nova-status upgrade check
 
     elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ]; then
+      su -s /bin/sh -c "nova-manage cell_v2 discover_hosts --verbose" nova
         echocolor "Restarting NOVA on $1"
         service nova-compute restart
 

@@ -76,7 +76,7 @@ EOF
     ops_edit $glancereg_ctl database connection mysql+pymysql://glance:$GLANCE_DBPASS@$MGNT_FQDN_CTL/glance
     #ops_del $glancereg_ctl database sqlite_db
 
-    ## [keystone_authtoken] section
+    # [keystone_authtoken] section
     ops_edit $glancereg_ctl keystone_authtoken www_authenticate_uri http://$MGNT_FQDN_CTL:5000
     ops_edit $glancereg_ctl keystone_authtoken auth_url http://$MGNT_FQDN_CTL:5000
     ops_edit $glancereg_ctl keystone_authtoken memcached_servers $MGNT_FQDN_CTL:11211
@@ -87,7 +87,7 @@ EOF
     ops_edit $glancereg_ctl keystone_authtoken username glance
     ops_edit $glancereg_ctl keystone_authtoken password $GLANCE_PASS
 
-    ## [paste_deploy] section
+    # [paste_deploy] section
     ops_edit $glancereg_ctl paste_deploy flavor keystone
 
     echocolor "Populate the Image service database"

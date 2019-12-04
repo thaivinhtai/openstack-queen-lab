@@ -18,6 +18,7 @@ function add_openstack_repo {
     apt-get -y update
     apt-get -y upgrade
     apt-get -y dist-upgrade
+    apt-get install python3-pip
     apt-get clean
 }
 

@@ -8,6 +8,7 @@ function install_crudini {
 function install_openstack_client {
     print_install "Install openstack client"
     apt-get -y install python-openstackclient
+    # pip3 install python-openstackclient
 }
 
 function install_ntp {
@@ -47,7 +48,7 @@ function install_database ()
 {
     local my_conf=/etc/mysql/conf.d/99-openstack.cnf
     print_install "Install and Config MariaDB"
-    echo "deb http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.2/ubuntu/ xenial main" > /etc/apt/sources.list.d/mariadb.list
+    echo "deb http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu/ bionic main" > /etc/apt/sources.list.d/mariadb.list
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
     apt-get update
 

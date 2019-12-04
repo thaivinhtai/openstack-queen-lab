@@ -24,11 +24,13 @@ if [ "$1" == "controller" ]; then
     # Core service
     source $TOP_DIR/install/01_keystone.sh
     source $TOP_DIR/install/02_glance.sh
+    source $TOP_DIR/install/07_placement.sh
     source $TOP_DIR/install/03_nova.sh
     source $TOP_DIR/install/04_neutron.sh
 
     install_keystone
     install_glance
+    install_placement
     install_nova $1
     install_neutron $1
 
@@ -54,4 +56,3 @@ else
     echo "Unknown node"
     exit 1
 fi
-
