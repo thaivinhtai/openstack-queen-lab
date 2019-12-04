@@ -18,26 +18,24 @@ export CTL_EXT_IP=192.168.81.90
 export CTL_DATA_IP=10.10.20.90
 
 ## Assigning IP for COMPUTE1 node
-export COM1_MGNT_IP=10.138.0.91
-export COM1_EXT_IP=192.168.81.91
-export COM1_DATA_IP=10.10.20.91
+export COM1_MGNT_IP=10.138.0.90
+export COM1_EXT_IP=192.168.81.90
+export COM1_DATA_IP=10.10.20.90
 #
 ## Assigning IP for COMPUTE2 node
 export COM2_MGNT_IP=10.138.0.92
 export COM2_EXT_IP=192.168.81.92
 export COM2_DATA_IP=10.10.20.92
 
-# ## Assigning IP for CINDER node
-# export CIN_MGNT_IP=10.138.0.91
-# export CIN_DATA_IP=10.10.20.91
+## Assigning IP for CINDER node
+export CIN_MGNT_IP=10.138.0.90
+export CIN_DATA_IP=10.10.20.90
 
 ## Gateway for EXT network
-# export GATEWAY_IP_EXT=172.16.234.254
 export GATEWAY_IP_EXT=192.168.81.1
 export NETMASK_ADD_EXT=255.255.255.0
 
 ## Gateway for MGNT network
-# export GATEWAY_IP_MGNT=192.168.81.1
 export GATEWAY_IP_MGNT=10.138.0.1
 export NETMASK_ADD_MGNT=255.255.240.0
 
@@ -46,7 +44,6 @@ export GATEWAY_IP_DATA=10.10.20.1
 export NETMASK_ADD_DATA=255.255.255.0
 
 ## DNS server
-# export DNS_IP="172.25.234.254"
 export DNS_IP="8.8.8.8"
 ## NTP server
 export NTP_SERVER="europe.pool.ntp.org"
@@ -58,8 +55,8 @@ export PUBLIC_FQDN_CTL=35.212.194.101
 # export PUBLIC_FQDN_CTL=192.168.81.90
 export MGNT_FQDN_CTL=35.212.194.101
 # export MGNT_FQDN_CTL=10.138.0.90
-export MGNT_FQDN_COM1=10.138.0.91
-export MGNT_FQDN_COM2=10.138.0.92
+export MGNT_FQDN_COM1=10.138.0.90
+export MGNT_FQDN_COM2=10.138.0.90
 # export MGNT_FQDN_CIN1=10.138.0.91
 
 
