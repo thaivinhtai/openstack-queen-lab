@@ -56,8 +56,7 @@ EOF
     print_header "Install and configure components"
     if [ "$1" == "controller" ]; then
         print_install "Install NOVA in $MGNT_FQDN_CTL"
-        apt-get -y install nova-api nova-conductor nova-consoleauth \
-            nova-novncproxy nova-scheduler nova-placement-api
+        apt-get -y install nova-api nova-conductor nova-novncproxy nova-scheduler
 
         backup_config $nova_conf
 
@@ -142,7 +141,7 @@ EOF
     ops_edit $nova_conf placement username placement
     ops_edit $nova_conf placement password $PLACEMENT_PASS
 
-    if [ "$1" == "controller" ]; then 
+    if [ "$1" == "controller" ]; then
         echocolor "Syncing Nova DB"
         su -s /bin/sh -c "nova-manage api_db sync" nova
         su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
