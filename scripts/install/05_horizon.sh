@@ -27,6 +27,7 @@ EOF
 
     # Configure the dashboard to use OpenStack services on the controller node
     # OPENSTACK_HOST = "controller"
+    sed -i "s/OPENSTACK_HOST = .*/OPENSTACK_HOST = \'$MGNT_FQDN_CTL\'/g" $localcnf
     sed -i "s/127.0.0.1/$MGNT_FQDN_CTL/g" $localcnf
     # In the Dashboard configuration section, allow your hosts to access Dashboard
     # ALLOWED_HOSTS = ['one.example.com', 'two.example.com']
@@ -35,6 +36,13 @@ EOF
     # Configure the memcached session storage service
     cat $localcnf | grep SESSION_ENGINE || cat << EOF >> $localcnf
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+CACHES = {
+    'default': {
+         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+         'LOCATION': 'controller:11211',
+    }
+}
 EOF
 
     # Enable the Identity API version 3
