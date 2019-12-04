@@ -1,0 +1,6 @@
+<secret ephemeral="no" private="no"> 
+	<uuid>58926a2c-3a78-4a18-848f-ee86205f7b2e</uuid>
+	<usage type="ceph">
+		<name>client.nova secret</name>
+	</usage>
+</secret>
