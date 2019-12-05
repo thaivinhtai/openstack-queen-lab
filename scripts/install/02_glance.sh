@@ -34,7 +34,7 @@ EOF
         image admin http://$MGNT_FQDN_CTL:9292
 
     print_install "Install GLANCE"
-    apt-get -y install python3-cinderclient
+    # apt-get -y install python3-cinderclient
     apt-get -y install glance
     backup_config $glanceapi_ctl
     backup_config $glancereg_ctl

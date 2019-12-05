@@ -7,7 +7,7 @@ function install_crudini {
 
 function install_openstack_client {
     print_install "Install openstack client"
-    apt-get -y install python-openstackclient
+    apt-get -y install python3-openstackclient
     # pip3 install python-openstackclient
 }
 
