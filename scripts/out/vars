@@ -5,9 +5,9 @@
 ## Management Network
 export MGNT_INTERFACE=ens4
 ## Tenant / xvlan Network
-export DATA_INTERFACE=ens5
+export DATA_INTERFACE=ens4
 ## Provider Network
-export EXT_INTERFACE=ens6
+export EXT_INTERFACE=ens4
 
 ## linuxbridge || openvswitch
 export NEUTRON_AGENT=linuxbridge
