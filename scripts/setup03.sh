@@ -24,9 +24,9 @@ if [ "$1" == "controller" ]; then
     # Core service
     source $TOP_DIR/install/01_keystone.sh
     source $TOP_DIR/install/02_glance.sh
-    source $TOP_DIR/install/07_placement.sh
-    source $TOP_DIR/install/03_nova.sh
-    source $TOP_DIR/install/04_neutron.sh
+    source $TOP_DIR/install/03_placement.sh
+    source $TOP_DIR/install/04_nova.sh
+    source $TOP_DIR/install/05_neutron.sh
 
     install_keystone
     install_glance
@@ -35,9 +35,9 @@ if [ "$1" == "controller" ]; then
     install_neutron $1
 
     # Additional service
-    source $TOP_DIR/install/06_cinder.sh
+    source $TOP_DIR/install/07_cinder.sh
     install_cinder $1
-    source $TOP_DIR/install/05_horizon.sh
+    source $TOP_DIR/install/06_horizon.sh
     install_horizon
 
 elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ]; then

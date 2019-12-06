@@ -8,7 +8,6 @@ function install_crudini {
 function install_openstack_client {
     print_install "Install openstack client"
     apt-get -y install python3-openstackclient
-    # pip3 install python-openstackclient
 }
 
 function install_ntp {
@@ -48,12 +47,12 @@ function install_database ()
 {
     local my_conf=/etc/mysql/conf.d/99-openstack.cnf
     print_install "Install and Config MariaDB"
-    echo "deb http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.4/ubuntu/ bionic main" > /etc/apt/sources.list.d/mariadb.list
+    echo "deb http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.5/ubuntu/ bionic main" > /etc/apt/sources.list.d/mariadb.list
     apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
     apt-get update
 
-    echo "mariadb-server-10.2 mysql-server/root_password password $MYSQL_PASS" | debconf-set-selections
-    echo "mariadb-server-10.2 mysql-server/root_password_again password $MYSQL_PASS" | debconf-set-selections
+    echo "mariadb-server-10.5 mysql-server/root_password password $MYSQL_PASS" | debconf-set-selections
+    echo "mariadb-server-10.5 mysql-server/root_password_again password $MYSQL_PASS" | debconf-set-selections
 
     apt-get -y install mariadb-server python-pymysql
     echo '' > $my_conf
@@ -133,10 +132,10 @@ function install_etcd {
     mkdir -p /var/lib/etcd
     chown etcd:etcd /var/lib/etcd
 
-    ETCD_VER=v3.2.7
+    ETCD_VER=3.3.13
     rm -rf /tmp/etcd && mkdir -p /tmp/etcd
-    curl -L -C - https://github.com/coreos/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
-    tar xzf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd --strip-components=1
+    curl -L -C - https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-v${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-v${ETCD_VER}-linux-amd64.tar.gz
+    tar xzf /tmp/etcd-v${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd --strip-components=1
     cp /tmp/etcd/etcd /usr/bin/etcd
     cp /tmp/etcd/etcdctl /usr/bin/etcdctl
 

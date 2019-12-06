@@ -29,16 +29,16 @@ if [ $# -ne 1 ]; then
     exit 1;
 fi
 
-if [ "$1" == "controller" ]; then 
+if [ "$1" == "controller" ]; then
     install_crudini
     install_openstack_client
     install_ntp $1
     install_database
     install_rabbitmq
     install_memcache
-    # install_etcd
+    install_etcd
 
-else 
+else
     install_crudini
     install_openstack_client
     install_ntp $1

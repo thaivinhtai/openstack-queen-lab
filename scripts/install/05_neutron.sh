@@ -100,6 +100,7 @@ function install_neutron() {
 
         ops_edit $neutron_ctl DEFAULT notify_nova_on_port_status_changes true
         ops_edit $neutron_ctl DEFAULT notify_nova_on_port_data_changes true
+        ops_edit $neutron_ctl oslo_concurrency lock_path /var/lib/neutron/tmp
 
         ops_edit $neutron_ctl nova auth_url http://$MGNT_FQDN_CTL:5000
         ops_edit $neutron_ctl nova auth_type password
@@ -112,8 +113,10 @@ function install_neutron() {
 
         echocolor "Configure the Modular Layer 2 (ML2) plug-in"
         ops_edit $ml2_clt ml2 type_drivers flat,vlan,vxlan
+        # ops_edit $ml2_clt ml2 type_drivers flat,vlan
         ops_edit $ml2_clt ml2 tenant_network_types vxlan
         ops_edit $ml2_clt ml2 mechanism_drivers linuxbridge,l2population
+        # ops_edit $ml2_clt ml2 mechanism_drivers linuxbridge
         ops_edit $ml2_clt ml2 extension_drivers port_security
         ops_edit $ml2_clt ml2_type_flat flat_networks provider
         ops_edit $ml2_clt ml2_type_vxlan vni_ranges "1:1000"
@@ -126,6 +129,7 @@ function install_neutron() {
         echocolor "Configure the Linux bridge agent"
         ops_edit $lbfile linux_bridge physical_interface_mappings provider:$EXT_INTERFACE
 
+        # ops_edit $lbfile vxlan enable_vxlan false
         ops_edit $lbfile vxlan enable_vxlan true
         ops_edit $lbfile vxlan local_ip $CTL_DATA_IP
         ops_edit $lbfile vxlan l2_population true
@@ -144,9 +148,11 @@ function install_neutron() {
         echocolor "Configure the metadata agent"
         ops_edit $netmetadata DEFAULT nova_metadata_host $MGNT_FQDN_CTL
         ops_edit $netmetadata DEFAULT metadata_proxy_shared_secret $METADATA_SECRET
+        # ops_edit $nova_ctl DEFAULT nova_metadata_host $MGNT_FQDN_CTL
+        # ops_edit $nova_ctl DEFAULT metadata_proxy_shared_secret $METADATA_SECRET
 
         echocolor "Configure the Compute service to use the Networking service"
-        ops_edit $nova_ctl neutron url http://$MGNT_FQDN_CTL:9696
+        # ops_edit $nova_ctl neutron url http://$MGNT_FQDN_CTL:9696
         ops_edit $nova_ctl neutron auth_url http://$MGNT_FQDN_CTL:5000
         ops_edit $nova_ctl neutron auth_type password
         ops_edit $nova_ctl neutron project_domain_name default
@@ -190,6 +196,8 @@ function install_neutron() {
         ops_edit $neutron_com keystone_authtoken project_name service
         ops_edit $neutron_com keystone_authtoken username neutron
         ops_edit $neutron_com keystone_authtoken password $NEUTRON_PASS
+
+        ops_edit $neutron_com oslo_concurrency lock_path /var/lib/neutron/tmp
 
         echocolor "Configuring linuxbridge_agent"
         # [linux_bridge] section

@@ -65,14 +65,14 @@ EOF
     --description "Service Project" service
 
   # Create user
-  openstack user create --domain default \
-  --password-prompt myuser
+  # openstack user create --domain default \
+  # --password-prompt myuser
 
   # Create the user role
-  openstack role create myrole
+  openstack role create user
 
   # Add the myrole role to the myproject project and myuser user:
-  openstack role add --project service --user myuser myrole
+  # openstack role add --project service --user myuser myrole
 
   print_header "Verify operation"
 

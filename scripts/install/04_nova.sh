@@ -43,14 +43,6 @@ EOF
         openstack endpoint create --region ${REGION_NAME} \
             compute admin http://$MGNT_FQDN_CTL:8774/v2.1
 
-        # openstack user create --domain default --password $PLACEMENT_PASS placement
-        # openstack role add --project service --user placement admin
-        # openstack service create --name placement --description "Placement API" placement
-        #
-        # openstack endpoint create --region ${REGION_NAME} placement public http://$PUBLIC_FQDN_CTL:8778
-        # openstack endpoint create --region ${REGION_NAME} placement internal http://$MGNT_FQDN_CTL:8778
-        # openstack endpoint create --region ${REGION_NAME} placement admin http://$MGNT_FQDN_CTL:8778
-
     fi
 
     print_header "Install and configure components"
@@ -76,15 +68,20 @@ EOF
         ops_edit $nova_conf api_database connection mysql+pymysql://nova:$NOVA_API_DBPASS@$MGNT_FQDN_CTL/nova_api
         ops_edit $nova_conf database connection mysql+pymysql://nova:$NOVA_DBPASS@$MGNT_FQDN_CTL/nova
 
-    elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ] ; then
-        # Determine whether your compute node supports hardware acceleration for virtual machines
-        # If this command returns a value of zero, your compute node does not support hardware acceleration and you must configure libvirt to use QEMU instead of KVM.
-        # egrep -c '(vmx|svm)' /proc/cpuinfo | grep 0 && ops_edit $novacom_conf libvirt virt_type qemu
-        ops_edit $novacom_conf libvirt virt_type qemu
+    # elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ] ; then
+    #     # Determine whether your compute node supports hardware acceleration for virtual machines
+    #     # If this command returns a value of zero, your compute node does not support hardware acceleration and you must configure libvirt to use QEMU instead of KVM.
+    #     # egrep -c '(vmx|svm)' /proc/cpuinfo | grep 0 && ops_edit $novacom_conf libvirt virt_type qemu
+    #     ops_edit $novacom_conf libvirt virt_type qemu
     fi
 
     echocolor "Configure message queue access"
-    ops_edit $nova_conf DEFAULT transport_url rabbit://openstack:$RABBIT_PASS@$MGNT_FQDN_CTL
+    if [ "$1" == "controller" ]; then
+      ops_edit $nova_conf DEFAULT transport_url rabbit://openstack:$RABBIT_PASS@$MGNT_FQDN_CTL:5672/
+
+    elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ] ; then
+        ops_edit $nova_conf DEFAULT transport_url rabbit://openstack:$RABBIT_PASS@$MGNT_FQDN_CTL
+    fi
 
     echocolor "Configure identity service access"
     ops_edit $nova_conf api auth_strategy keystone
@@ -127,7 +124,7 @@ EOF
     fi
 
     ## In the [glance] section, configure the location of the Image service API
-    ops_edit $nova_conf glance api_servers http://$PUBLIC_FQDN_CTL:9292
+    ops_edit $nova_conf glance api_servers http://$MGNT_FQDN_CTL:9292
 
     ## In the [oslo_concurrency] section, configure the lock path
     ops_edit $nova_conf oslo_concurrency lock_path /var/lib/nova/tmp
@@ -137,7 +134,7 @@ EOF
     ops_edit $nova_conf placement project_domain_name default
     ops_edit $nova_conf placement project_name service
     ops_edit $nova_conf placement auth_type password
-    ops_edit $nova_conf placement user_domain_name default
+    ops_edit $nova_conf placement user_domain_name Default
     ops_edit $nova_conf placement auth_url http://$MGNT_FQDN_CTL:5000/v3
     ops_edit $nova_conf placement username placement
     ops_edit $nova_conf placement password $PLACEMENT_PASS
@@ -150,24 +147,12 @@ EOF
         su -s /bin/sh -c "nova-manage db sync" nova
 
         echocolor "Testing NOVA service"
-        # service apache2 start
-        # openstack compute service list
-        nova-manage cell_v2 list_cells
+        su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
 
-        # service nova-api restart
-        # service nova-scheduler restart
-        # service nova-conductor restart
-        # service nova-novncproxy restart
         service nova-* restart
 
-        # openstack extension list --network
-        # openstack compute service list
-        # openstack catalog list
-        # openstack image list
-        # nova-status upgrade check
-
     elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ]; then
-      su -s /bin/sh -c "nova-manage cell_v2 discover_hosts --verbose" nova
+        su -s /bin/sh -c "nova-manage cell_v2 discover_hosts --verbose" nova
         echocolor "Restarting NOVA on $1"
         service nova-compute restart
 
