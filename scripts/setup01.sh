@@ -12,7 +12,7 @@ source $TOP_DIR/lib/functions.sh
 function add_openstack_repo {
     print_header "Enable the OpenStack Train repository"
     apt-get install -y software-properties-common
-    add-apt-repository -y cloud-archive:train
+    add-apt-repository -y cloud-archive:stein
 
     print_install "Upgrade the packages for server"
     apt-get -y update
