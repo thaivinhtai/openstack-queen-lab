@@ -36,7 +36,7 @@ EOF
 
     print_header "Install and configure components"
     print_install "Install Placement in $MGNT_FQDN_CTL"
-    apt install placement-api
+    apt -y install placement-api
 
     backup_config $placement_conf
 
@@ -70,7 +70,7 @@ EOF
     placement-status upgrade check
 
     print_header "Install osc-placement plugin"
-    pip install osc-placement
+    pip3 install osc-placement
 
     print_header "List available resource classes and traits"
     openstack --os-placement-api-version 1.2 resource class list --sort-column name

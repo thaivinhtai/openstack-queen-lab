@@ -70,7 +70,8 @@ EOF
 
     # elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ] ; then
     #     # Determine whether your compute node supports hardware acceleration for virtual machines
-    #     # If this command returns a value of zero, your compute node does not support hardware acceleration and you must configure libvirt to use QEMU instead of KVM.
+    #     # If this command returns a value of zero, your compute node does not support hardware acceleration
+    #     # and you must configure libvirt to use QEMU instead of KVM.
     #     # egrep -c '(vmx|svm)' /proc/cpuinfo | grep 0 && ops_edit $novacom_conf libvirt virt_type qemu
     #     ops_edit $novacom_conf libvirt virt_type qemu
     fi
