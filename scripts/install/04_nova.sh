@@ -150,6 +150,10 @@ EOF
         echocolor "Testing NOVA service"
         su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
 
+        # Fix error Failed to allocate the network(s), not rescheduling
+sed -i 's/#vif_plugging_is_fatal = true/#vif_plugging_is_fatal = False/g' $nova_conf
+sed -i 's/#vif_plugging_timeout = 300/vif_plugging_timeout = 0/g' $nova_conf
+
         service nova-* restart
 
     elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ]; then
