@@ -13,14 +13,6 @@ FLUSH PRIVILEGES;
 EOF
 }
 
-
-function enable_net_forward() {
-    sed -i 's/net.ipv4.ip_forward=.*/net.ipv4.ip_forward=1/' /etc/sysctl.conf
-    #echo "net.ipv4.conf.all.rp_filter=0" >> /etc/sysctl.conf
-    #echo "net.ipv4.conf.default.rp_filter=0" >> /etc/sysctl.conf
-    sysctl -p
-}
-
 function enable_net_bridge() {
     modprobe br_netfilter
     cat /etc/sysctl.conf | grep bridge-nf-call-iptables || echo 'net.bridge.bridge-nf-call-iptables=1' >> /etc/sysctl.conf
@@ -40,7 +32,6 @@ function install_neutron() {
     local netdhcp=/etc/neutron/dhcp_agent.ini
     local netl3agent=/etc/neutron/l3_agent.ini
 
-    enable_net_forward
     enable_net_bridge
 
     if [ "$1" == "controller" ]; then
@@ -113,10 +104,8 @@ function install_neutron() {
 
         echocolor "Configure the Modular Layer 2 (ML2) plug-in"
         ops_edit $ml2_clt ml2 type_drivers flat,vlan,vxlan
-        # ops_edit $ml2_clt ml2 type_drivers flat,vlan
         ops_edit $ml2_clt ml2 tenant_network_types vxlan
         ops_edit $ml2_clt ml2 mechanism_drivers linuxbridge,l2population
-        # ops_edit $ml2_clt ml2 mechanism_drivers linuxbridge
         ops_edit $ml2_clt ml2 extension_drivers port_security
         ops_edit $ml2_clt ml2_type_flat flat_networks provider
         ops_edit $ml2_clt ml2_type_vxlan vni_ranges "1:1000"
@@ -148,11 +137,9 @@ function install_neutron() {
         echocolor "Configure the metadata agent"
         ops_edit $netmetadata DEFAULT nova_metadata_host $MGNT_FQDN_CTL
         ops_edit $netmetadata DEFAULT metadata_proxy_shared_secret $METADATA_SECRET
-        # ops_edit $nova_ctl DEFAULT nova_metadata_host $MGNT_FQDN_CTL
-        # ops_edit $nova_ctl DEFAULT metadata_proxy_shared_secret $METADATA_SECRET
 
         echocolor "Configure the Compute service to use the Networking service"
-        # ops_edit $nova_ctl neutron url http://$MGNT_FQDN_CTL:9696
+        ops_edit $nova_ctl neutron url http://$MGNT_FQDN_CTL:9696
         ops_edit $nova_ctl neutron auth_url http://$MGNT_FQDN_CTL:5000
         ops_edit $nova_ctl neutron auth_type password
         ops_edit $nova_ctl neutron project_domain_name default
@@ -161,6 +148,7 @@ function install_neutron() {
         ops_edit $nova_ctl neutron project_name service
         ops_edit $nova_ctl neutron username neutron
         ops_edit $nova_ctl neutron password $NEUTRON_PASS
+        ####
         ops_edit $nova_ctl neutron service_metadata_proxy true
         ops_edit $nova_ctl neutron metadata_proxy_shared_secret $METADATA_SECRET
 

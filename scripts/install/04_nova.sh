@@ -48,7 +48,7 @@ EOF
     print_header "Install and configure components"
     if [ "$1" == "controller" ]; then
         print_install "Install NOVA in $MGNT_FQDN_CTL"
-        apt-get -y install nova-api nova-conductor nova-novncproxy nova-scheduler
+        apt-get -y install nova-api nova-conductor nova-novncproxy nova-scheduler nova-consoleauth
 
         backup_config $nova_conf
 
@@ -68,31 +68,25 @@ EOF
         ops_edit $nova_conf api_database connection mysql+pymysql://nova:$NOVA_API_DBPASS@$MGNT_FQDN_CTL/nova_api
         ops_edit $nova_conf database connection mysql+pymysql://nova:$NOVA_DBPASS@$MGNT_FQDN_CTL/nova
 
-    # elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ] ; then
-    #     # Determine whether your compute node supports hardware acceleration for virtual machines
-    #     # If this command returns a value of zero, your compute node does not support hardware acceleration
-    #     # and you must configure libvirt to use QEMU instead of KVM.
-    #     # egrep -c '(vmx|svm)' /proc/cpuinfo | grep 0 && ops_edit $novacom_conf libvirt virt_type qemu
-    #     ops_edit $novacom_conf libvirt virt_type qemu
+    elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ] ; then
+        # Determine whether your compute node supports hardware acceleration for virtual machines
+        # If this command returns a value of zero, your compute node does not support hardware acceleration
+        # and you must configure libvirt to use QEMU instead of KVM.
+        # egrep -c '(vmx|svm)' /proc/cpuinfo | grep 0 && ops_edit $novacom_conf libvirt virt_type qemu
+        ops_edit $novacom_conf libvirt virt_type qemu
     fi
 
     echocolor "Configure message queue access"
-    if [ "$1" == "controller" ]; then
-      ops_edit $nova_conf DEFAULT transport_url rabbit://openstack:$RABBIT_PASS@$MGNT_FQDN_CTL:5672/
-
-    elif [ "$1" == "compute1" ] || [ "$1" == "compute2" ] ; then
-        ops_edit $nova_conf DEFAULT transport_url rabbit://openstack:$RABBIT_PASS@$MGNT_FQDN_CTL
-    fi
+    ops_edit $nova_conf DEFAULT transport_url rabbit://openstack:$RABBIT_PASS@$MGNT_FQDN_CTL
 
     echocolor "Configure identity service access"
     ops_edit $nova_conf api auth_strategy keystone
 
-    ops_edit $nova_conf keystone_authtoken www_authenticate_uri http://$MGNT_FQDN_CTL:5000
-    ops_edit $nova_conf keystone_authtoken auth_url http://$MGNT_FQDN_CTL:5000
+    ops_edit $nova_conf keystone_authtoken auth_url http://$MGNT_FQDN_CTL:5000/v3
     ops_edit $nova_conf keystone_authtoken memcached_servers $MGNT_FQDN_CTL:11211
     ops_edit $nova_conf keystone_authtoken auth_type password
-    ops_edit $nova_conf keystone_authtoken project_domain_name default
-    ops_edit $nova_conf keystone_authtoken user_domain_name default
+    ops_edit $nova_conf keystone_authtoken project_domain_name Default
+    ops_edit $nova_conf keystone_authtoken user_domain_name Default
     ops_edit $nova_conf keystone_authtoken project_name service
     ops_edit $nova_conf keystone_authtoken username nova
     ops_edit $nova_conf keystone_authtoken password $NOVA_PASS
@@ -132,7 +126,7 @@ EOF
 
     ## In the [placement] section, configure the Placement API
     ops_edit $nova_conf placement region_name ${REGION_NAME}
-    ops_edit $nova_conf placement project_domain_name default
+    ops_edit $nova_conf placement project_domain_name Default
     ops_edit $nova_conf placement project_name service
     ops_edit $nova_conf placement auth_type password
     ops_edit $nova_conf placement user_domain_name Default
@@ -151,8 +145,8 @@ EOF
         su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
 
         # Fix error Failed to allocate the network(s), not rescheduling
-sed -i 's/#vif_plugging_is_fatal = true/#vif_plugging_is_fatal = False/g' $nova_conf
-sed -i 's/#vif_plugging_timeout = 300/vif_plugging_timeout = 0/g' $nova_conf
+        sed -i 's/#vif_plugging_is_fatal = true/#vif_plugging_is_fatal = False/g' $nova_conf
+        sed -i 's/#vif_plugging_timeout = 300/vif_plugging_timeout = 0/g' $nova_conf
 
         service nova-* restart
 

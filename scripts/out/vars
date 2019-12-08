@@ -84,7 +84,7 @@ export GLANCE_PASS="admin"
 export NOVA_PASS="admin"
 export NEUTRON_PASS="admin"
 export PLACEMENT_PASS="admin"
-export METADATA_SECRET="admin"
+export METADATA_SECRET="db3c2f34-18c6-11ea-ad25-330a32b12066"
 export CINDER_PASS="admin"
 
 ## OpenStack database credentials

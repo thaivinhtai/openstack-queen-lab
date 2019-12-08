@@ -72,7 +72,7 @@ EOF
   openstack role create user
 
   # Add the myrole role to the myproject project and myuser user:
-  # openstack role add --project service --user myuser myrole
+  # openstack role add --project service --user user user
 
   print_header "Verify operation"
 
@@ -92,18 +92,6 @@ export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 EOF
   chmod +x admin-openrc
-
-#   cat << EOF > ${CREDENTIALS_DEMO_USERNAME}-openrc
-# export OS_PROJECT_DOMAIN_NAME=default
-# export OS_USER_DOMAIN_NAME=default
-# export OS_PROJECT_NAME=${CREDENTIALS_DEMO_USERNAME}
-# export OS_USERNAME=${CREDENTIALS_DEMO_USERNAME}
-# export OS_PASSWORD=${CREDENTIALS_DEMO_PASSWORD}
-# export OS_AUTH_URL=http://$PUBLIC_FQDN_CTL:5000/v3
-# export OS_IDENTITY_API_VERSION=3
-# export OS_IMAGE_API_VERSION=2
-# EOF
-#   chmod +x ${CREDENTIALS_DEMO_USERNAME}-openrc
 
   echocolor "Verifying keystone"
   source admin-openrc

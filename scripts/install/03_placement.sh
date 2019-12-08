@@ -51,7 +51,7 @@ EOF
     echocolor "Configure identity service access"
     ops_edit $placement_conf api auth_strategy keystone
 
-    # ops_edit $placement_conf keystone_authtoken www_authenticate_url http://$MGNT_FQDN_CTL:5000
+    # Comment out or remove any other options in the [keystone_authtoken] section.
     ops_edit $placement_conf keystone_authtoken auth_url http://$MGNT_FQDN_CTL:5000
     ops_edit $placement_conf keystone_authtoken memcached_servers $MGNT_FQDN_CTL:11211
     ops_edit $placement_conf keystone_authtoken auth_type password
